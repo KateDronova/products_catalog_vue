@@ -27,8 +27,12 @@
 
 <style scoped>
   .catalogList {
-    display: grid;
-    grid-template-columns: repeat(4, calc(25% - 15px));
-    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 5px;
+    column-gap: 2%;
+    margin-top: 25px;
   }
 </style>

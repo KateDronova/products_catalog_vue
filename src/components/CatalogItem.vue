@@ -1,9 +1,14 @@
 <template>
   <div class="catalogItem">
-    <img :src="product.image" alt=product.title>
+    <div class="catalogItem__img">
+      <img :src="product.image" :alt="product.title" />
+    </div>
     <h2>{{ product.title }}</h2>
     <p>{{ product.brand }}</p>
-    <p>{{ product.regular_price.value }}</p>
+    <p>
+      <span v-if="product.regular_price.currency === 'USD'">$</span
+      >{{ product.regular_price.value }}
+    </p>
   </div>
 </template>
 
@@ -25,12 +30,27 @@
   .catalogItem {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    row-gap: 15px;
-    border: 1px solid var(--adding-background-color);
-    background-color: #fff;
-    border-radius: 8px;
-    min-height: 300px;
-    padding: 15px;
+    justify-content: space-between;
+    row-gap: 10px;
+    width: 220px;
+    padding-bottom: 15px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .catalogItem__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    min-height: 280px;
+    border: 1px solid var(--dark-color-s);
+    background-color: var(--light-color-s);
+    border-radius: 3px;
+  }
+  .catalogItem__img > img {
+    width: 100%;
+    height: auto;
   }
 </style>
