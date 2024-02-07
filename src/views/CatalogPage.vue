@@ -26,7 +26,6 @@
       this.$store.dispatch("fetchBrands");
       this.$store.dispatch("fetchProducts");
     },
-    computed: {},
   });
 </script>
 

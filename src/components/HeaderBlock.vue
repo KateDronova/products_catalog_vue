@@ -1,11 +1,16 @@
 <template>
-  <header class="header">
+  <header
+    class="header"
+    :style="{
+      'justify-content': $route.path != '/' ? 'center' : 'space-between'
+    }">
     <img
       class="logo"
       src="../../public/assets/logoAstrio.png"
       alt="logo_astrio"
       @click="$router.push('/')" />
     <MyButton
+      v-if="$route.path == '/'"
       class="shoppingCart"
       :class="{
         whileDragging: $store.state.isDraggingProduct,
@@ -54,7 +59,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px;
+    padding: 28px;
     background-color: var(--adding-background-color);
     box-shadow: 0px 2px 15px 0px var(--dark-color-s);
     position: fixed;

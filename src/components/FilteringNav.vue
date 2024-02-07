@@ -1,20 +1,27 @@
 <template>
   <ul class="filterBlock" role="listbox">
-    <li class="filterBlock__item selectedValue" role="option" id="all" @click="selectFilter('all')">
+    <li
+      class="filterBlock__item"
+      :class="{
+        selectedValue: $store.state.selectedBrand == 0,
+      }"
+      role="option"
+      id="all"
+      @click="selectFilter('all')">
       <input
         type="radio"
         id="allBrands"
         name="brand"
         value="0"
         v-model="$store.state.selectedBrand"
-        checked="true"
         @change="$store.commit('setSelectedBrand', $store.state.selectedBrand)" />
-      <!-- :model-value="$store.state.selectedBrand"
-        @update:model-value="$store.state.selectedBrand"  -->
       <label for="allBrands">All brands</label>
     </li>
     <li
       class="filterBlock__item"
+      :class="{
+        selectedValue: $store.state.selectedBrand == brand.id,
+      }"
       v-for="brand in $store.state.brands"
       :key="brand.id"
       role="option"
@@ -27,9 +34,6 @@
         :value="brand.id"
         v-model="$store.state.selectedBrand"
         @change="$store.commit('setSelectedBrand', $store.state.selectedBrand)" />
-      <!-- @change="$store.commit('setSelectedBrand', $store.state.selectedBrand), $store.dispatch('filterByBrands')" /> -->
-      <!-- :model-value="$store.state.selectedBrand"
-        @update:model-value="$store.commit('setSelectedBrand')" /> -->
       <label :for="`card${brand.id}`">{{ brand.title }}</label>
     </li>
   </ul>
