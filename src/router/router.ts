@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import CatalogPage from "../views/CatalogPage.vue";
-import ShoppingCardPage from "../views/CatalogPage.vue";
+import CatalogPage from "@/views/CatalogPage.vue";
+import ShoppingCartPage from "@/views/ShoppingCartPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,9 +9,9 @@ const routes: Array<RouteRecordRaw> = [
     component: CatalogPage,
   },
   {
-    path: "/shoppingcart",
+    path: "/shoppingCart",
     name: "shoppingCart",
-    component: ShoppingCardPage,
+    component: ShoppingCartPage,
   },
 ];
 

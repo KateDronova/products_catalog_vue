@@ -1,9 +1,9 @@
 <template>
   <div class="catalogList">
     <CatalogItem
-      :product="product"
-      v-for="product in products"
-      :key="product.id"></CatalogItem>
+    :product="product"
+    v-for="product in $store.getters.filteredProducts"
+    :key="product.id"></CatalogItem>
   </div>
 </template>
 
@@ -15,12 +15,6 @@
     name: "CatalogList",
     components: {
       CatalogItem,
-    },
-    props: {
-      products: {
-        type: Array,
-        required: true,
-      },
     },
   });
 </script>

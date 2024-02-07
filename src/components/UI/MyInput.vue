@@ -1,5 +1,6 @@
 <template>
-  <input class="input" />
+  <input type="radio" class="input" @change="changeOption" />
+  <!-- <input type="radio" class="input" @change="changeOption" /> -->
 </template>
 
 <script lang="ts">
@@ -7,6 +8,11 @@
 
   export default defineComponent({
     name: "MyInput",
+    methods: {
+      changeOption(event: Event) {
+        // this.$emit('update:modelValue', event.target.checked)
+      }
+    }
   });
 </script>
 

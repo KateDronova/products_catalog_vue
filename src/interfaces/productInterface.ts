@@ -9,4 +9,5 @@ export default interface Product {
   },
   "image": string,
   "brand": number,
+  "brandTitle"?: string,
 }

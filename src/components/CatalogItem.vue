@@ -1,10 +1,14 @@
 <template>
-  <div class="catalogItem">
+  <div
+    class="catalogItem"
+    @dragstart="setDraggingProduct(true), onDragStart($event, product.id)"
+    @dragend="setDraggingProduct(false)"
+    draggable="true">
     <div class="catalogItem__img">
       <img :src="product.image" :alt="product.title" />
     </div>
     <h2>{{ product.title }}</h2>
-    <p>{{ product.brand }}</p>
+    <p>{{ product.brandTitle }}</p>
     <p>
       <span v-if="product.regular_price.currency === 'USD'">$</span
       >{{ product.regular_price.value }}
@@ -14,6 +18,7 @@
 
 <script lang="ts">
   import { defineComponent } from "vue";
+  import { mapMutations } from "vuex";
 
   export default defineComponent({
     name: "CatalogItem",
@@ -21,6 +26,15 @@
       product: {
         type: Object,
         required: true,
+      },
+      transferData: [],
+    },
+    methods: {
+      ...mapMutations({
+        setDraggingProduct: "setDraggingProduct",
+      }),
+      onDragStart(e: DragEvent, productId: string) {
+        e?.dataTransfer?.setData("text/plain", productId);
       },
     },
   });
@@ -34,6 +48,7 @@
     row-gap: 10px;
     width: 220px;
     padding-bottom: 15px;
+    font-weight: 600;
     &:hover {
       cursor: pointer;
     }

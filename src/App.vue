@@ -32,7 +32,7 @@
     --light-color-s: #fff;
     --light-color-m: #e7e7e7;
     --light-color-l: #d1d1d1;
-    --light-color-xl:#b8b8b8;
+    --light-color-xl: #b8b8b8;
     --dark-color-s: #080808;
     --dark-color-m: #131313;
     --dark-color-l: #292929;
@@ -41,11 +41,14 @@
     font-family: Avenir, Helvetica, Arial, sans-serif;
     background-color: var(--basic-background-color);
     color: var(--basic-font-color);
+    min-height: 100svh;
   }
   main {
     padding-top: 100px;
   }
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: "Museo W01 900";
   }
 </style>

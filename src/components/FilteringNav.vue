@@ -1,21 +1,38 @@
 <template>
   <ul class="filterBlock" role="listbox">
-    <li class="filterBlock__item" role="option">
-      <MyInput id="allBrands" type="radio" />
+    <li class="filterBlock__item selectedValue" role="option" id="all" @click="selectFilter('all')">
+      <input
+        type="radio"
+        id="allBrands"
+        name="brand"
+        value="0"
+        v-model="$store.state.selectedBrand"
+        checked="true"
+        @change="$store.commit('setSelectedBrand', $store.state.selectedBrand)" />
+      <!-- :model-value="$store.state.selectedBrand"
+        @update:model-value="$store.state.selectedBrand"  -->
       <label for="allBrands">All brands</label>
     </li>
     <li
       class="filterBlock__item"
-      v-for="brand in brands"
+      v-for="brand in $store.state.brands"
       :key="brand.id"
-      role="option">
-      <MyInput id="brand" type="radio" />
-      <label for="brand">{{ brand.title }}</label>
+      role="option"
+      :id="`${brand.id}`"
+      @click="selectFilter(`${brand.id}`)">
+      <input
+        type="radio"
+        :id="`card${brand.id}`"
+        name="brand"
+        :value="brand.id"
+        v-model="$store.state.selectedBrand"
+        @change="$store.commit('setSelectedBrand', $store.state.selectedBrand)" />
+      <!-- @change="$store.commit('setSelectedBrand', $store.state.selectedBrand), $store.dispatch('filterByBrands')" /> -->
+      <!-- :model-value="$store.state.selectedBrand"
+        @update:model-value="$store.commit('setSelectedBrand')" /> -->
+      <label :for="`card${brand.id}`">{{ brand.title }}</label>
     </li>
   </ul>
-  <!-- <select class="filterList" :size="brands.length">
-    <option class="filterList__item" v-for="brand in brands" :key="brand.id">{{ brand.title }}</option>
-  </select> -->
 </template>
 
 <script lang="ts">
@@ -23,13 +40,14 @@
 
   export default defineComponent({
     name: "FilteringNav",
-    data() {
-      return {};
-    },
-    props: {
-      brands: {
-        type: Object,
-        required: true,
+    methods: {
+      selectFilter(brandId: string): void {
+        const filterBlockItems = document.querySelectorAll(".filterBlock__item");
+        filterBlockItems.forEach(element => {
+          element.classList.remove("selectedValue");
+        });
+        const selectedBrandElement = document.getElementById(brandId);
+        selectedBrandElement?.classList.add("selectedValue");
       },
     },
   });
@@ -39,8 +57,9 @@
   .filterBlock {
     padding: 25px;
     background-image: linear-gradient(90deg, var(--light-color-m), var(--light-color-xl));
+    min-height: 100svh;
   }
-  .filterBlock__item  {
+  .filterBlock__item {
     padding: 10px;
     font-family: "Museo W01 900";
     font-size: larger;
@@ -60,5 +79,9 @@
     opacity: 0;
     width: 0;
     height: 0;
+  }
+  .selectedValue {
+    text-shadow: 3px 3px 3px var(--adding-background-color);
+    text-decoration: underline;
   }
 </style>
