@@ -18,15 +18,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--light-color-s);
+    background-color: var(--adding-background-color);
     border: none;
     border-radius: 3px;
+    font-weight: 600;
     &:hover {
       cursor: pointer;
-      background-color: var(--light-color-m);
+      background-color: var(--adding-light-color);
     }
     &:active {
-      background-color: var(--light-color-l);
+      background-color: var(--adding-dark-color);
     }
   }
 </style>

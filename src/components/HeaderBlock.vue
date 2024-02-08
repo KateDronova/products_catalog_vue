@@ -2,12 +2,12 @@
   <header
     class="header"
     :style="{
-      'justify-content': $route.path != '/' ? 'center' : 'space-between'
+      'justify-content': $route.path != '/' ? 'center' : 'space-between',
     }">
     <img
       class="logo"
       src="../../public/assets/logoAstrio.png"
-      alt="logo_astrio"
+      alt="logo of astrio"
       @click="$router.push('/')" />
     <MyButton
       v-if="$route.path == '/'"
@@ -27,8 +27,8 @@
       </div>
       <img
         class="shoppingCart__Icon"
-        src="../../public/assets/shoppingCart.svg"
-        alt="to_shopping_cart" />
+        src="../../public/assets/icons/shoppingCart.svg"
+        alt="go to shopping cart" />
       <div class="shoppingCart__Num">{{ $store.state.addedProducts.length }}</div>
     </MyButton>
   </header>
@@ -37,18 +37,31 @@
 <script lang="ts">
   import { defineComponent } from "vue";
   import { mapMutations } from "vuex";
+  import Product from "@/interfaces/productInterface";
+
+  interface AddedProdData {
+    productsToAdd: Product[];
+  }
 
   export default defineComponent({
     name: "HeaderBlock",
+    data(): AddedProdData {
+      return {
+        productsToAdd: [],
+      };
+    },
     methods: {
       ...mapMutations({
         setOverDropArea: "setDraggingProduct",
       }),
       onDrop(e: DragEvent) {
-        this.$store.commit("setAddedProducts", [
-          ...this.$store.state.addedProducts,
-          Number(e?.dataTransfer?.getData("text")),
-        ]);
+        const addedId = Number(e?.dataTransfer?.getData("text"));
+        const found = this.$store.state.products.find((item: Product) => item.id === addedId);
+
+        if (found) {
+          this.productsToAdd.push(found);
+        }
+        this.$store.commit("setAddedProducts", this.productsToAdd);
       },
     },
   });
@@ -65,6 +78,15 @@
     position: fixed;
     z-index: 10;
     width: 100%;
+    & button {
+      background-color: var(--light-color-s);
+      &:hover {
+        background-color: var(--light-color-m);
+      }
+      &:active {
+        background-color: var(--light-color-l);
+      }
+    }
   }
   .logo {
     margin-left: 15px;
@@ -93,7 +115,7 @@
     border-radius: 50%;
     background-color: var(--dark-color-s);
     color: var(--light-color-s);
-    font-weight: 500;
+    font-weight: 400;
     padding: 5px;
   }
   button.whileDragging {

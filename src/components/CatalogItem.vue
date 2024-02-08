@@ -27,7 +27,6 @@
         type: Object,
         required: true,
       },
-      transferData: [],
     },
     methods: {
       ...mapMutations({

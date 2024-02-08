@@ -26,9 +26,10 @@
   }
   :root {
     --basic-background-color: #f9f5e1;
+    --basic-font-color: #000;
     --adding-background-color: #b197fc;
-    --adding-background-color-transp: rgba(176, 151, 252, 0.5);
-    --basic-font-color: #0b0716;
+    --adding-light-color: #bda7ff;
+    --adding-dark-color: #9d89d9;
     --light-color-s: #fff;
     --light-color-m: #e7e7e7;
     --light-color-l: #d1d1d1;
