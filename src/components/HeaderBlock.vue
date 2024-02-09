@@ -9,9 +9,10 @@
       src="../../public/assets/logoAstrio.png"
       alt="logo of astrio"
       @click="$router.push('/')" />
+
     <MyButton
       v-if="$route.path == '/'"
-      class="shoppingCart"
+      class="shoppingCartBtn"
       :class="{
         whileDragging: $store.state.isDraggingProduct,
       }"
@@ -19,17 +20,18 @@
       @dragover.prevent="setOverDropArea(true)"
       @drop="onDrop($event)">
       <div
-        class="shoppingCart__text"
+        class="shoppingCartBtn__text"
         :class="{
           hidden: !$store.state.isDraggingProduct,
         }">
         &#10010; Drop here to add
       </div>
+
       <img
-        class="shoppingCart__Icon"
+        class="shoppingCartBtn__Icon"
         src="../../public/assets/icons/shoppingCart.svg"
         alt="go to shopping cart" />
-      <div class="shoppingCart__Num">{{ $store.state.totalQty }}</div>
+      <div class="shoppingCartBtn__Num">{{ $store.state.totalQty }}</div>
     </MyButton>
   </header>
 </template>
@@ -47,11 +49,11 @@
       }),
       onDrop(e: DragEvent) {
         const addedId = Number(e?.dataTransfer?.getData("text"));
-        const found = this.$store.state.products.find((item) => item.id === addedId);
+        const found = this.$store.state.products.find(item => item.id === addedId);
         const arr = [...this.$store.state.addedProducts]; //just copy
 
         if (found) {
-          const alreadyHasItem = arr.find((item) => item.id === found.id);
+          const alreadyHasItem = arr.find(item => item.id === found.id);
           if (alreadyHasItem) {
             alreadyHasItem.quantity += 1;
             this.$store.commit("setAddedProducts", arr);
@@ -101,16 +103,16 @@
       cursor: pointer;
     }
   }
-  .shoppingCart {
+  .shoppingCartBtn {
     position: relative;
     text-align: right;
     transition: 200ms ease-in-out;
   }
-  .shoppingCart__Icon {
+  .shoppingCartBtn__Icon {
     width: 30px;
     height: auto;
   }
-  .shoppingCart__Num {
+  .shoppingCartBtn__Num {
     position: absolute;
     text-align: center;
     width: 25px;
@@ -127,9 +129,10 @@
     background-color: var(--basic-background-color);
     outline: 5px dotted var(--dark-color-s);
     outline-offset: 8px;
+    min-width: 100px;
     width: 30%;
   }
-  .shoppingCart__text {
+  .shoppingCartBtn__text {
     font-size: larger;
     transition: 400ms ease-in-out;
   }
@@ -138,5 +141,22 @@
     width: 0;
     height: 0;
     opacity: 0;
+  }
+  @media (width < 550px) {
+    .header {
+      padding: 15px 15px;
+      height: 100px;
+    }
+    .logo {
+    margin-left: 0px;
+    width: 120px;
+    }
+    .shoppingCartBtn__text {
+      font-size: small;
+      text-align: center;
+    }
+    button.whileDragging .shoppingCartBtn__Icon {
+      display: none;
+    }
   }
 </style>

@@ -42,4 +42,10 @@
     text-align: center;
     margin-top: 40svh;
   }
+  @media (width < 550px) {
+    .catalogPage {
+      grid-template-columns: 40% 1fr;
+      font-size: smaller;
+    }
+  }
 </style>

@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import axios from "axios";
-import Product from "@/interfaces/productInterface";
 import ProductFull from "@/interfaces/productInterfaceFull";
 import { State } from "vue";
 
@@ -26,7 +25,17 @@ export default createStore<State>({
       return [...state.products].filter((product) =>
         product.brand === state.selectedBrand
       );
-    }
+    },
+    checkSum(state): number {
+      const sum = +state.addedProducts
+        .reduce(
+          (sum: number, currentItem: ProductFull) =>
+            sum + currentItem.regular_price.value * currentItem.quantity,
+          0
+        )
+        .toFixed(3);
+      return sum;
+    },
   },
   mutations: {
     setProducts(state, products) {

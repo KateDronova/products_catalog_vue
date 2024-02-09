@@ -67,4 +67,12 @@
     width: 100%;
     height: auto;
   }
+  @media (width < 550px) {
+    .catalogItem {
+      width: 180px;
+    }
+    .catalogItem__img {
+      min-height: auto;  
+    }
+  }
 </style>

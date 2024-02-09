@@ -1,5 +1,5 @@
 <template>
-  <tr class="tr">
+  <tr>
     <td class="itemData">
       <div class="flex" style="justify-content: start; flex-wrap: wrap">
         <div class="thumbnail" :style="`background-image: url(${product?.image})`"></div>
@@ -17,7 +17,7 @@
     </td>
     <td><span v-if="product.regular_price.currency === 'USD'">$</span>{{ totalSumOfOneItem }}</td>
     <td>
-      <MyButton class="grayButton"
+      <MyButton class="grayButton" @click="deleteItem(product.id)"
         ><img
           style="width: 12px"
           src="../../public/assets/icons/trash.svg"
@@ -44,6 +44,19 @@
       updateTotalSum(): void {
         this.$store.commit("setTotalSum", this.$store.state.totalSum + this.totalSumOfOneItem);
       },
+      deleteItem(id: number) {
+        const foundItem = this.$store.state.addedProducts.find(item => item.id === id);
+        if (foundItem) {
+          if (this.$store.state.totalQty !== 0) {
+            this.$store.commit("setTotalQty", this.$store.state.totalQty - foundItem.quantity);
+          }
+        }
+        const foundIndex = this.$store.state.addedProducts.findIndex(item => item.id === id);
+        const arr = this.$store.state.addedProducts.concat();
+        arr.splice(foundIndex, 1);
+        this.$store.commit("setAddedProducts", arr);
+        this.$store.commit("setTotalSum", this.$store.getters.checkSum);
+      },
     },
     computed: {
       totalSumOfOneItem(): number {
@@ -57,6 +70,10 @@
 </script>
 
 <style scoped>
+  tr {
+    min-width: 500px;
+  }
+
   td {
     width: 10%;
     padding: 10px 20px;
@@ -96,12 +113,12 @@
     padding: 5px;
     border: 1px solid var(--light-color-l);
   }
-  /* .smallBtn {
-    padding: 3px;
-  } */
   @media (width < 768px) {
     .flex {
       gap: 10px;
+    }
+    td {
+      padding: 10px;
     }
   }
 </style>
