@@ -6,16 +6,26 @@
         {{ product?.brandTitle }} / {{ product?.title }}
       </div>
     </td>
+
     <td>
       <span v-if="product.regular_price.currency === 'USD'">$</span
       >{{ product?.regular_price.value }}
     </td>
+
     <td>
       <div class="flex">
-        <input class="quantityInput" type="number" :value="product?.quantity" />
+        <input
+          class="quantityInput"
+          type="number"
+          :value="product?.quantity"
+          @input="updateQty"
+          min="1"
+          max="99" />
       </div>
     </td>
+
     <td><span v-if="product.regular_price.currency === 'USD'">$</span>{{ totalSumOfOneItem }}</td>
+
     <td>
       <MyButton class="grayButton" @click="deleteItem(product.id)"
         ><img
@@ -45,17 +55,26 @@
         this.$store.commit("setTotalSum", this.$store.state.totalSum + this.totalSumOfOneItem);
       },
       deleteItem(id: number) {
-        const foundItem = this.$store.state.addedProducts.find(item => item.id === id);
-        if (foundItem) {
-          if (this.$store.state.totalQty !== 0) {
-            this.$store.commit("setTotalQty", this.$store.state.totalQty - foundItem.quantity);
-          }
+        const foundItem = this.product;
+        if (this.$store.state.totalQty !== 0) {
+          this.$store.commit("setTotalQty", this.$store.state.totalQty - foundItem.quantity);
         }
         const foundIndex = this.$store.state.addedProducts.findIndex(item => item.id === id);
         const arr = this.$store.state.addedProducts.concat();
         arr.splice(foundIndex, 1);
         this.$store.commit("setAddedProducts", arr);
         this.$store.commit("setTotalSum", this.$store.getters.checkSum);
+      },
+      updateQty(e: Event) {
+        const arr = this.$store.state.addedProducts.concat();
+        const foundItem = arr.find(item => item.id === this.product.id);
+        if (foundItem) {
+          const target = e.target as HTMLInputElement;
+          foundItem.quantity = +target.value;
+          this.$store.commit("setAddedProducts", arr);
+          this.$store.commit("setTotalSum", this.$store.getters.checkSum);
+          this.$store.dispatch("checkQty");
+        }
       },
     },
     computed: {
@@ -109,7 +128,7 @@
     }
   }
   .quantityInput {
-    width: 40px;
+    width: 50px;
     padding: 5px;
     border: 1px solid var(--light-color-l);
   }

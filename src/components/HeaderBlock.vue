@@ -4,6 +4,7 @@
     :style="{
       'justify-content': $route.path != '/' ? 'center' : 'space-between',
     }">
+
     <img
       class="logo"
       src="../../public/assets/logoAstrio.png"
@@ -12,13 +13,14 @@
 
     <MyButton
       v-if="$route.path == '/'"
+      @click="$router.push('/shoppingcart')"
+      @dragover.prevent="setOverDropArea(true)"
+      @drop="onDrop($event)"
       class="shoppingCartBtn"
       :class="{
         whileDragging: $store.state.isDraggingProduct,
-      }"
-      @click="$router.push('/shoppingcart')"
-      @dragover.prevent="setOverDropArea(true)"
-      @drop="onDrop($event)">
+      }">
+
       <div
         class="shoppingCartBtn__text"
         :class="{
@@ -31,6 +33,7 @@
         class="shoppingCartBtn__Icon"
         src="../../public/assets/icons/shoppingCart.svg"
         alt="go to shopping cart" />
+        
       <div class="shoppingCartBtn__Num">{{ $store.state.totalQty }}</div>
     </MyButton>
   </header>
@@ -39,7 +42,6 @@
 <script lang="ts">
   import { defineComponent } from "vue";
   import { mapMutations } from "vuex";
-  import ProductFull from "@/interfaces/productInterfaceFull";
 
   export default defineComponent({
     name: "HeaderBlock",
@@ -50,7 +52,7 @@
       onDrop(e: DragEvent) {
         const addedId = Number(e?.dataTransfer?.getData("text"));
         const found = this.$store.state.products.find(item => item.id === addedId);
-        const arr = [...this.$store.state.addedProducts]; //just copy
+        const arr = [...this.$store.state.addedProducts];
 
         if (found) {
           const alreadyHasItem = arr.find(item => item.id === found.id);
@@ -61,14 +63,7 @@
             this.$store.commit("setAddedProducts", [...this.$store.state.addedProducts, found]);
           }
         }
-        this.checkQty();
-      },
-      checkQty(): void {
-        const totalQtyOfItems = this.$store.state.addedProducts.reduce(
-          (sum: number, currentItem: ProductFull) => sum + currentItem.quantity,
-          0
-        );
-        this.$store.commit("setTotalQty", totalQtyOfItems);
+        this.$store.dispatch('checkQty');
       },
     },
   });

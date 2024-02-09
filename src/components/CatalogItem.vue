@@ -1,9 +1,10 @@
 <template>
   <div
-    class="catalogItem"
     @dragstart="setDraggingProduct(true), onDragStart($event, product.id)"
     @dragend="setDraggingProduct(false)"
-    draggable="true">
+    draggable="true"
+    class="catalogItem">
+
     <div class="catalogItem__img">
       <img :src="product.image" :alt="product.title" />
     </div>
@@ -13,6 +14,7 @@
       <span v-if="product.regular_price.currency === 'USD'">$</span
       >{{ product.regular_price.value }}
     </p>
+    
   </div>
 </template>
 
@@ -72,7 +74,7 @@
       width: 180px;
     }
     .catalogItem__img {
-      min-height: auto;  
+      min-height: auto;
     }
   }
 </style>

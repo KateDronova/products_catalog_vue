@@ -1,8 +1,8 @@
 <template>
   <div class="catalogList">
     <CatalogItem
-    :product="product"
     v-for="product in $store.getters.filteredProducts"
+    :product="product"
     :key="product.id"></CatalogItem>
   </div>
 </template>

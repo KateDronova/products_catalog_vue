@@ -9,7 +9,6 @@
       <div class="loading" v-else>
         <RotateLoader color="var(--adding-background-color)"></RotateLoader>
       </div>
-      <!-- <div class="observer" v-intersection></div> -->
     </div>
   </div>
 </template>

@@ -101,11 +101,19 @@ export default createStore<State>({
           item.quantity = 1;
         })
         commit("setProducts", response.data);
+        
       } catch (error) {
         alert("Unexpected error has just happened, please reload the page.");
       } finally {
         commit("setProductsLoading", false);
       }
+    },
+    checkQty({ state, commit }): void {
+      const totalQtyOfItems = state.addedProducts.reduce(
+        (sum: number, currentItem: ProductFull) => sum + currentItem.quantity,
+        0
+      );
+      commit("setTotalQty", totalQtyOfItems);
     },
   },
   modules: {},

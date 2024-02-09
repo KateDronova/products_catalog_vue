@@ -36,7 +36,6 @@
 <script lang="ts">
   import { defineComponent } from "vue";
   import TableRow from "@/components/TableRow.vue";
-  // import ProductFull from "@/interfaces/productInterfaceFull";
   import MyButton from "@/components/UI/MyButton.vue";
 
   export default defineComponent({
@@ -49,18 +48,6 @@
         this.$store.commit("setTotalSum", 0);
         this.$store.commit("setTotalQty", 0);
       },
-    },
-    computed: {
-      // checkSum(): number {
-      //   const sum = +this.$store.state.addedProducts
-      //     .reduce(
-      //       (sum: number, currentItem: ProductFull) =>
-      //         sum + currentItem.regular_price.value * currentItem.quantity,
-      //       0
-      //     )
-      //     .toFixed(3);
-      //   return sum;
-      // },
     },
     mounted() {
       this.$store.commit("setTotalSum", this.$store.getters.checkSum);

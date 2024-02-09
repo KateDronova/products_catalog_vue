@@ -8,33 +8,39 @@
       role="option"
       id="all"
       @click="selectFilter('all')">
+
       <input
         type="radio"
-        id="allBrands"
         name="brand"
+        id="allBrands"
         value="0"
         v-model="$store.state.selectedBrand"
         @change="$store.commit('setSelectedBrand', $store.state.selectedBrand)" />
+
       <label for="allBrands">All brands</label>
     </li>
+
     <li
+      v-for="brand in $store.state.brands"
+      @click="selectFilter(`${brand.id}`)"
+      role="option"
+      :key="brand.id"
+      :id="`${brand.id}`"
       class="filterBlock__item"
       :class="{
         selectedValue: $store.state.selectedBrand == brand.id,
-      }"
-      v-for="brand in $store.state.brands"
-      :key="brand.id"
-      role="option"
-      :id="`${brand.id}`"
-      @click="selectFilter(`${brand.id}`)">
+      }">
+
       <input
         type="radio"
-        :id="`card${brand.id}`"
         name="brand"
+        :id="`card${brand.id}`"
         :value="brand.id"
         v-model="$store.state.selectedBrand"
         @change="$store.commit('setSelectedBrand', $store.state.selectedBrand)" />
+
       <label :for="`card${brand.id}`">{{ brand.title }}</label>
+
     </li>
   </ul>
 </template>
@@ -80,6 +86,7 @@
     color: transparent;
   }
   .filterBlock__item [type="radio"] {
+    display: none;
     opacity: 0;
     width: 0;
     height: 0;
