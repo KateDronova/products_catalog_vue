@@ -29,7 +29,7 @@
         class="shoppingCart__Icon"
         src="../../public/assets/icons/shoppingCart.svg"
         alt="go to shopping cart" />
-      <div class="shoppingCart__Num">{{ $store.state.addedProducts.length }}</div>
+      <div class="shoppingCart__Num">{{ $store.state.totalQty }}</div>
     </MyButton>
   </header>
 </template>
@@ -37,31 +37,36 @@
 <script lang="ts">
   import { defineComponent } from "vue";
   import { mapMutations } from "vuex";
-  import Product from "@/interfaces/productInterface";
-
-  interface AddedProdData {
-    productsToAdd: Product[];
-  }
+  import ProductFull from "@/interfaces/productInterfaceFull";
 
   export default defineComponent({
     name: "HeaderBlock",
-    data(): AddedProdData {
-      return {
-        productsToAdd: [],
-      };
-    },
     methods: {
       ...mapMutations({
         setOverDropArea: "setDraggingProduct",
       }),
       onDrop(e: DragEvent) {
         const addedId = Number(e?.dataTransfer?.getData("text"));
-        const found = this.$store.state.products.find((item: Product) => item.id === addedId);
+        const found = this.$store.state.products.find((item) => item.id === addedId);
+        const arr = [...this.$store.state.addedProducts]; //just copy
 
         if (found) {
-          this.productsToAdd.push(found);
+          const alreadyHasItem = arr.find((item) => item.id === found.id);
+          if (alreadyHasItem) {
+            alreadyHasItem.quantity += 1;
+            this.$store.commit("setAddedProducts", arr);
+          } else {
+            this.$store.commit("setAddedProducts", [...this.$store.state.addedProducts, found]);
+          }
         }
-        this.$store.commit("setAddedProducts", this.productsToAdd);
+        this.checkQty();
+      },
+      checkQty(): void {
+        const totalQtyOfItems = this.$store.state.addedProducts.reduce(
+          (sum: number, currentItem: ProductFull) => sum + currentItem.quantity,
+          0
+        );
+        this.$store.commit("setTotalQty", totalQtyOfItems);
       },
     },
   });

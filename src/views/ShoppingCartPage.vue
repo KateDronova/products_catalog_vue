@@ -18,7 +18,9 @@
           <td class="totalSum" colspan="5">Subtotal: ${{ checkSum }}</td>
         </tr>
       </table>
-      <MyButton class="shoppingCart__submitBtn" type="submit" @click="makeAnOrder">Checkout</MyButton>
+      <MyButton class="shoppingCart__submitBtn" type="submit" @click="makeAnOrder"
+        >Checkout</MyButton
+      >
     </div>
 
     <div class="emptyCart" v-else>
@@ -32,7 +34,7 @@
 <script lang="ts">
   import { defineComponent } from "vue";
   import TableRow from "@/components/TableRow.vue";
-  import Product from "@/interfaces/productInterface";
+  import ProductFull from "@/interfaces/productInterfaceFull";
   import MyButton from "@/components/UI/MyButton.vue";
 
   export default defineComponent({
@@ -40,13 +42,18 @@
     components: { TableRow, MyButton },
     methods: {
       makeAnOrder() {
-        alert('An order is made. Thanks for choosing us!')
-      }
+        alert("An order is made. Thanks for choosing us!");
+        this.$store.commit("setAddedProducts", []);
+      },
     },
     computed: {
       checkSum(): number {
         return +this.$store.state.addedProducts
-          .reduce((sum: number, currentItem: Product) => sum + currentItem.regular_price.value, 0)
+          .reduce(
+            (sum: number, currentItem: ProductFull) =>
+              sum + currentItem.regular_price.value * currentItem.quantity,
+            0
+          )
           .toFixed(3);
       },
     },
@@ -93,5 +100,7 @@
     font-size: larger;
     font-weight: 600;
     padding-bottom: 20px;
+  }
+  @media (width < 500px) {
   }
 </style>

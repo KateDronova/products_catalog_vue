@@ -9,6 +9,6 @@ export default interface Product {
   },
   "image": string,
   "brand": number,
-  "brandTitle"?: string,
-  "quantity"?: number,
+  "brandTitle": string,
+  "quantity": number,
 }

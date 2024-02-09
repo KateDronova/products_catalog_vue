@@ -1,13 +1,15 @@
 import { Store } from 'vuex'
-import Product from './interfaces/productInterface'
+import ProductFull from './interfaces/productInterfaceFull'
 import Brand from './interfaces/brandInterface'
 
 declare module '@vue/runtime-core' {
   interface State {
-    products: Product[],
+    products: ProductFull[],
     brands: Brand[],
-    addedProducts: Product[],
+    addedProducts: ProductFull[],
     selectedBrand: number,
+    totalSum: number,
+    totalQty: number,
     isProductsLoading: boolean,
     isDraggingProduct: boolean,
     page: number,

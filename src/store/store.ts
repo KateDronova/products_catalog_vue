@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import axios from "axios";
 import Product from "@/interfaces/productInterface";
+import ProductFull from "@/interfaces/productInterfaceFull";
 import { State } from "vue";
 
 export default createStore<State>({
@@ -9,6 +10,8 @@ export default createStore<State>({
     brands: [],
     addedProducts: [],
     selectedBrand: 0,
+    totalSum: 0,
+    totalQty: 0,
     isProductsLoading: false,
     isDraggingProduct: false,
     page: 1,
@@ -16,7 +19,7 @@ export default createStore<State>({
     totalPages: 0,
   }),
   getters: {
-    filteredProducts(state: State) {
+    filteredProducts(state) {
       if (state.selectedBrand == 0) {
         return state.products;
       }
@@ -37,6 +40,12 @@ export default createStore<State>({
     },
     setSelectedBrand(state, selectedBrand) {
       state.selectedBrand = selectedBrand;
+    },
+    setTotalSum(state, totalSum) {
+      state.totalSum = totalSum;
+    },
+    setTotalQty(state, totalQty) {
+      state.totalQty = totalQty;
     },
     setProductsLoading(state, bool) {
       state.isProductsLoading = bool;
@@ -73,17 +82,16 @@ export default createStore<State>({
         });
         commit("setTotalPages", Math.ceil(response.data.length / state.limit));
 
-        response.data.map((item: Product) => {
+        response.data.map((item: ProductFull) => {
           let index = 0;
           const brandObjFromProxy = JSON.parse(JSON.stringify(state.brands));
           while (brandObjFromProxy[index].id && brandObjFromProxy[index].id !== item.brand) {
             index += 1;
           }
           item.brandTitle = brandObjFromProxy[index].title;
+          item.quantity = 1;
         })
-
         commit("setProducts", response.data);
-        return response.data;
       } catch (error) {
         alert("Unexpected error has just happened, please reload the page.");
       } finally {
